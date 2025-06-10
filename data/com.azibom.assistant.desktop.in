@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=gnomeaiassistant
-Exec=gnomeaiassistant
-Icon=org.gnome.GnomeAiAssistant
+Name=Assistant
+Exec=assistant
+Icon=com.azibom.assistant
 Terminal=false
 Type=Application
 Categories=Utility;
