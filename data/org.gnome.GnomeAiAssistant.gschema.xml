@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<schemalist gettext-domain="gnomeaiassistant">
-	<schema id="org.gnome.GnomeAiAssistant" path="/org/gnome/GnomeAiAssistant/">
-	</schema>
-</schemalist>
