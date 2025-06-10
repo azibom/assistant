@@ -1,26 +1,39 @@
-import json, urllib.request, threading, re, numpy as np
-from gi.repository import Gtk, GLib
+from gi.repository import Gtk
+from gi.repository import GLib
+import json
+import urllib.request
+import threading
+import re
+import numpy as np
+
 from .commands import commands
 
 # --------------- Embedding via Ollama (GPU) -----------------
-EMBED_URL  = "http://localhost:11434/api/embeddings"
+EMBED_URL = "http://localhost:11434/api/embeddings"
 EMBED_MODEL = "nomic-embed-text"
 LLM_URL = "http://localhost:11434/api/generate"
 COMMAND_THRESHOLD = 0.70
+
 
 def extract_argument(prompt: str, arg_description: str) -> str | None:
     sys_prompt = (
         f"You are an assistant extracting argument values from user input.\n"
         f"Argument: {arg_description}\n"
         f"User may provide the argument directly or implicitly.\n"
-        f"For example, if the user says 'open Facebook', you should respond with 'https://facebook.com'.\n"
+        f"For example, if the user says 'open Facebook', "
+        f"you should respond with 'https://facebook.com'.\n"
         f"Respond ONLY with the final value or the single word: NONE.\n"
     )
-    payload = {"model": "phi:2.7b-chat-v2-q4_0", "prompt": f"{sys_prompt}\nUser: {prompt}", "stream": False}
+    payload = {
+        "model": "phi:2.7b-chat-v2-q4_0",
+        "prompt": f"{sys_prompt}\nUser: {prompt}",
+        "stream": False,
+    }
     data = json.dumps(payload).encode()
     resp = urllib.request.urlopen(urllib.request.Request(LLM_URL, data=data))
     out = json.loads(resp.read())["response"].strip()
     return None if out.upper() == "NONE" else out
+
 
 def embed(text: str) -> np.ndarray:
     payload = {"model": EMBED_MODEL, "prompt": text}
@@ -29,26 +42,30 @@ def embed(text: str) -> np.ndarray:
     ).read()
     return np.asarray(json.loads(vec)["embedding"], dtype=np.float32)
 
-def cosine(a, b): return float(np.dot(a, b) / (np.linalg.norm(a)*np.linalg.norm(b)))
+
+def cosine(a, b):
+    return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
+
 
 # --------------- Categories / Commands ----------------------
 CATEGORIES = {
-    "system":  "System-level commands: uptime, free space, assistant name, open browser",
+    "system": "System-level commands: uptime, free space, assistant name, open browser",
 }
 CATEGORY_EMB = {k: embed(v) for k, v in CATEGORIES.items()}
-COMMAND_EMB  = {
-    cat: {n: embed(c["short"]+" "+c["long"]) for n, c in cmds.items()}
+COMMAND_EMB = {
+    cat: {n: embed(c["short"] + " " + c["long"]) for n, c in cmds.items()}
     for cat, cmds in commands.items()
 }
 
 # --------------- Keyword overrides --------------------------
 KEYWORDS = {
-    "get_bot_name":   ["your name", "who are you", "name of assistant"],
-    "get_bot_age":    ["how old are you", "your age"],
-    "get_uptime":     ["uptime", "how long", "system running"],
+    "get_bot_name": ["your name", "who are you", "name of assistant"],
+    "get_bot_age": ["how old are you", "your age"],
+    "get_uptime": ["uptime", "how long", "system running"],
     "get_free_space": ["free space", "disk space", "storage left"],
-    "open_browser":   ["open", "website", "browser", "go to", "search"],
+    "open_browser": ["open", "website", "browser", "go to", "search"],
 }
+
 
 # --------------- TinyLlama helper to extract URL -------------
 def extract_url(prompt: str) -> str | None:
@@ -61,11 +78,16 @@ def extract_url(prompt: str) -> str | None:
         "Extract the first valid URL from the user's request. "
         "Respond ONLY with the URL or, if no URL present, the single word: NONE."
     )
-    payload = {"model": "tinyllama", "prompt": f"{sys_prompt}\nUser: {prompt}", "stream": False}
+    payload = {
+        "model": "tinyllama",
+        "prompt": f"{sys_prompt}\nUser: {prompt}",
+        "stream": False,
+    }
     data = json.dumps(payload).encode()
     resp = urllib.request.urlopen(urllib.request.Request(LLM_URL, data=data))
     out = json.loads(resp.read())["response"].strip()
     return None if out.upper() == "NONE" else out
+
 
 # --------------- GTK Window ----------------------------------
 @Gtk.Template(resource_path="/com/azibom/assistant/window.ui")
@@ -78,14 +100,15 @@ class AssistantWindow(Gtk.ApplicationWindow):
     def ask_phi(self, prompt: str) -> str:
         try:
             sys_prompt = (
-                "You are a helpful assistant. Please answer the user's question clearly but briefly, in 1-2 short sentences. "
+                "You are a helpful assistant. Please answer the user's question "
+                "clearly but briefly, in 1-2 short sentences. "
                 "Do not give long explanations. Be concise."
             )
             phi_payload = {
                 "model": "phi:2.7b-chat-v2-q4_0",
                 "prompt": f"{sys_prompt}\nUser: {prompt}",
                 "stream": False,
-                "max_tokens": 100
+                "max_tokens": 100,
             }
             data = json.dumps(phi_payload).encode()
             resp = urllib.request.urlopen(urllib.request.Request(LLM_URL, data=data))
@@ -131,9 +154,11 @@ class AssistantWindow(Gtk.ApplicationWindow):
     @Gtk.Template.Callback()
     def on_entry_activate(self, entry):
         text = entry.get_text().strip()
-        if not text: return
+        if not text:
+            return
         self.append("🙋 You", text)
         entry.set_text("…")
+
         def worker():
             cat = self.pick_category(text)
             GLib.idle_add(self.append, "🔍 Category", cat)
@@ -141,12 +166,22 @@ class AssistantWindow(Gtk.ApplicationWindow):
             fn, sim = self.pick_command(text, cat)
 
             if sim >= COMMAND_THRESHOLD:
-                GLib.idle_add(self.append, "🤖 Command", f"run: {fn}() | similarity: {sim:.2%}")
+                GLib.idle_add(
+                    self.append, "🤖 Command", f"run: {fn}() | similarity: {sim:.2%}"
+                )
                 out = self.run_cmd(fn, cat, text)
                 GLib.idle_add(self.append, "🖥️ Output", str(out))
             else:
-                GLib.idle_add(self.append, "🤖", f"I don't think this is a command (similarity {sim:.2%}). Let me answer as an assistant...")
+                GLib.idle_add(
+                    self.append,
+                    "🤖",
+                    (
+                        f"I don't think this is a command "
+                        f"(similarity {sim:.2%}). "
+                        "Let me answer as an assistant..."
+                    ),
+                )
                 out = self.ask_phi(text)
                 GLib.idle_add(self.append, "🖥️ Assistant Answer", out)
-        threading.Thread(target=worker, daemon=True).start()
 
+        threading.Thread(target=worker, daemon=True).start()
