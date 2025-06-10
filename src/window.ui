@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <template class="GnomeAiAssistantWindow" parent="GtkApplicationWindow">
+  <template class="AssistantWindow" parent="GtkApplicationWindow">
     <property name="default-width">400</property>
     <property name="default-height">500</property>
-    <property name="title">GNOME AI Assistant</property>
-    <property name="icon-name">org.gnome.GnomeAiAssistant</property>
+    <property name="title">Assistant</property>
+    <property name="icon-name">com.azibom.assistant</property>
 
     <child>
       <object class="GtkBox">
