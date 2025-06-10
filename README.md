@@ -1,4 +1,4 @@
-# GNOME AI Assistant
+# Assistant
 
 A simple yet powerful **AI-powered desktop assistant** for GNOME.
 
