@@ -22,7 +22,7 @@ def _show_notification():
         proxy.call_sync(
             "Notify",
             GLib.Variant("(susssasa{sv}i)", (
-                "GNOME-AI",          # app name
+                "Assistant",         # app name
                 0,                   # replaces_id
                 "",                  # app_icon
                 "Hello!",            # summary
@@ -93,7 +93,7 @@ commands = {
             "long":   "Returns the assistant's name.",
             "usage":  "run: get_bot_name()",
             "args":   [],
-            "execute": lambda: "I'm GNOME-AI 🤖",
+            "execute": lambda: "I'm Assistant 🤖",
         },
         "get_bot_age": {
             "label":  "Assistant Age",
