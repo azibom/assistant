@@ -1,6 +1,6 @@
 desktop_file = i18n.merge_file(
-        input: 'org.gnome.GnomeAiAssistant.desktop.in',
-       output: 'org.gnome.GnomeAiAssistant.desktop',
+        input: 'com.azibom.assistant.desktop.in',
+       output: 'com.azibom.assistant.desktop',
          type: 'desktop',
        po_dir: '../po',
       install: true,
@@ -13,8 +13,8 @@ if desktop_utils.found()
 endif
 
 appstream_file = i18n.merge_file(
-        input: 'org.gnome.GnomeAiAssistant.metainfo.xml.in',
-       output: 'org.gnome.GnomeAiAssistant.metainfo.xml',
+        input: 'com.azibom.assistant.metainfo.xml.in',
+       output: 'com.azibom.assistant.metainfo.xml',
        po_dir: '../po',
       install: true,
   install_dir: get_option('datadir') / 'metainfo'
@@ -24,7 +24,7 @@ appstreamcli = find_program('appstreamcli', required: false, disabler: true)
 test('Validate appstream file', appstreamcli,
      args: ['validate', '--no-net', '--explain', appstream_file])
 
-install_data('org.gnome.GnomeAiAssistant.gschema.xml',
+install_data('com.azibom.assistant.gschema.xml',
   install_dir: get_option('datadir') / 'glib-2.0' / 'schemas'
 )
 
@@ -37,8 +37,8 @@ test('Validate schema file',
 service_conf = configuration_data()
 service_conf.set('bindir', get_option('prefix') / get_option('bindir'))
 configure_file(
-  input: 'org.gnome.GnomeAiAssistant.service.in',
-  output: 'org.gnome.GnomeAiAssistant.service',
+  input: 'com.azibom.assistant.service.in',
+  output: 'com.azibom.assistant.service',
   configuration: service_conf,
   install_dir: get_option('datadir') / 'dbus-1' / 'services'
 )

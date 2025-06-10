@@ -1,0 +1,64 @@
+{
+    "id" : "com.azibom.assistant",
+    "runtime" : "org.gnome.Platform",
+    "runtime-version" : "master",
+    "sdk" : "org.gnome.Sdk",
+    "command" : "assistant",
+    "finish-args" : [
+        "--talk-name=org.freedesktop.portal.Desktop",
+        "--share=network",
+        "--socket=system-bus",
+        "--socket=session-bus",
+        "--socket=wayland",
+        "--socket=x11",
+        "--device=dri",
+        "--env=DISPLAY=:0",
+        "--talk-name=org.freedesktop.login1",
+        "--talk-name=org.freedesktop.DBus",
+        "--filesystem=home"
+    ],
+    "cleanup" : [
+        "/include",
+        "/lib/pkgconfig",
+        "/man",
+        "/share/doc",
+        "/share/gtk-doc",
+        "/share/man",
+        "/share/pkgconfig",
+        "*.la",
+        "*.a"
+    ],
+    "modules" : [
+        {
+            "name" : "llama_cpp",
+            "buildsystem" : "simple",
+            "build-commands" : [
+                "pip3 install --no-index --find-links=python_wheels llama-cpp-python --prefix=/app"
+            ],
+            "sources" : [
+                {
+                    "type" : "dir",
+                    "path" : "./python_wheels",
+                    "dest" : "python_wheels"
+                }
+            ]
+        },
+        {
+            "name" : "Assistant",
+            "builddir" : true,
+            "buildsystem" : "meson",
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://github.com/azibom/assistant"
+                }
+            ],
+            "config-opts" : [
+                "--libdir=lib"
+            ]
+        }
+    ],
+    "build-options" : {
+        "env" : {        }
+    }
+}

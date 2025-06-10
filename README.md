@@ -1,8 +1,8 @@
 # Assistant
 
-A simple yet powerful **AI-powered desktop assistant** for GNOME.
+A simple yet powerful **AI-powered desktop assistant**.
 
-GNOME AI Assistant lets you interact with your Linux desktop using natural language.  
+Assistant lets you interact with your Linux desktop using natural language.  
 Chat with the assistant, run system commands, open websites, show notifications, and more — all from a clean, native GTK 4 UI.
 
 ---
@@ -12,7 +12,7 @@ Chat with the assistant, run system commands, open websites, show notifications,
 | | |
 |---|---|
 | 🧠 **Local AI chat** (via **Ollama**) | 🔔 **GNOME notifications** |
-| 🖥️ **Natural-language system commands** | 🔎 **Flatpak-friendly** (GNOME Portals) |
+| 🖥️ **Natural-language system commands** | 🔎 **Flatpak-friendly** |
 | 🗂️ **Smart argument extraction**<br>(e.g. “open Facebook” ⇒ `https://facebook.com`) | 🌐 **Fully offline** — no cloud needed |
 | 🖌️ **GTK 4 / Adwaita UI**  |
 
@@ -63,19 +63,18 @@ ollama pull phi:2.7b-chat
 ## 📦 Installation (Flatpak dev build)
 
 ```bash
-git clone https://github.com/azibom/Gnome-Ai-Assistant.git
-cd Gnome-Ai-Assistant
-flatpak-builder --user --install --force-clean build-dir org.gnome.GnomeAiAssistant.json
+git clone https://github.com/azibom/assistant.git
+cd assistant
+flatpak-builder --user --install --force-clean build-dir org.gnome.assistant.json
 ```
 
-> Requires **GNOME Platform 47** and **GNOME Sdk 47**.
+> Requires **GNOME Platform** and **GNOME Sdk**.
 
 ---
 
 ## 🎯 Project goals
 
-* Provide a smooth AI-assistant experience **natively on GNOME**
-* Respect the Flatpak sandbox by using **GNOME Portals**
+* Provide a smooth AI-assistant experience **natively on the GNOME desktop**
 * Remain **fully local & offline** – no cloud APIs
 * Make everyday system tasks more natural
 * Be **easily extensible** with new commands
@@ -103,4 +102,4 @@ See [`COPYING`](COPYING) for full text.
 
 ---
 
-Enjoy using **GNOME AI Assistant** — your smart desktop companion!
+Enjoy using **Assistant** — your smart desktop companion!

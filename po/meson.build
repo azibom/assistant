@@ -1,1 +1,1 @@
-i18n.gettext('gnomeaiassistant', preset: 'glib')
+i18n.gettext('assistant', preset: 'glib')

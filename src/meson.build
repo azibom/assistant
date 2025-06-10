@@ -1,9 +1,9 @@
 pkgdatadir = get_option('prefix') / get_option('datadir') / meson.project_name()
-moduledir = pkgdatadir / 'gnomeaiassistant'
+moduledir = pkgdatadir / 'assistant'
 gnome = import('gnome')
 
-gnome.compile_resources('gnomeaiassistant',
-  'gnomeaiassistant.gresource.xml',
+gnome.compile_resources('assistant',
+  'assistant.gresource.xml',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,
@@ -18,19 +18,19 @@ conf.set('localedir', get_option('prefix') / get_option('localedir'))
 conf.set('pkgdatadir', pkgdatadir)
 
 configure_file(
-  input: 'gnomeaiassistant.in',
-  output: 'gnomeaiassistant',
+  input: 'assistant.in',
+  output: 'assistant',
   configuration: conf,
   install: true,
   install_dir: get_option('bindir'),
   install_mode: 'r-xr-xr-x'
 )
 
-gnomeaiassistant_sources = [
+assistant_sources = [
   '__init__.py',
   'main.py',
   'window.py',
   'commands.py'
 ]
 
-install_data(gnomeaiassistant_sources, install_dir: moduledir)
+install_data(assistant_sources, install_dir: moduledir)
