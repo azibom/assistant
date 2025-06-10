@@ -1,4 +1,4 @@
-application_id = 'org.gnome.GnomeAiAssistant'
+application_id = 'com.azibom.assistant'
 
 scalable_dir = 'hicolor' / 'scalable' / 'apps'
 install_data(

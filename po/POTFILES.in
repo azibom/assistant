@@ -1,8 +1,8 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-data/org.gnome.GnomeAiAssistant.desktop.in
-data/org.gnome.GnomeAiAssistant.metainfo.xml.in
-data/org.gnome.GnomeAiAssistant.gschema.xml
+data/com.azibom.assistant.desktop.in
+data/com.azibom.assistant.metainfo.xml.in
+data/com.azibom.assistant.gschema.xml
 src/main.py
 src/window.py
 src/window.ui

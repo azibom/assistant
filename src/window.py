@@ -68,9 +68,9 @@ def extract_url(prompt: str) -> str | None:
     return None if out.upper() == "NONE" else out
 
 # --------------- GTK Window ----------------------------------
-@Gtk.Template(resource_path="/org/gnome/GnomeAiAssistant/window.ui")
-class GnomeAiAssistantWindow(Gtk.ApplicationWindow):
-    __gtype_name__ = "GnomeAiAssistantWindow"
+@Gtk.Template(resource_path="/com/azibom/assistant/window.ui")
+class AssistantWindow(Gtk.ApplicationWindow):
+    __gtype_name__ = "AssistantWindow"
 
     chat_view = Gtk.Template.Child()
     chat_entry = Gtk.Template.Child()

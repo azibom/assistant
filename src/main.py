@@ -24,14 +24,14 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 
 from gi.repository import Gtk, Gio, Adw
-from .window import GnomeAiAssistantWindow
+from .window import AssistantWindow
 
 
-class GnomeaiassistantApplication(Adw.Application):
+class AssistantApplication(Adw.Application):
     """The main application singleton class."""
 
     def __init__(self):
-        super().__init__(application_id='org.gnome.GnomeAiAssistant',
+        super().__init__(application_id='com.azibom.assistant',
                          flags=Gio.ApplicationFlags.DEFAULT_FLAGS)
         self.create_action('quit', lambda *_: self.quit(), ['<primary>q'])
         self.create_action('about', self.on_about_action)
@@ -45,13 +45,13 @@ class GnomeaiassistantApplication(Adw.Application):
         """
         win = self.props.active_window
         if not win:
-            win = GnomeAiAssistantWindow(application=self)
+            win = AssistantWindow(application=self)
         win.present()
 
     def on_about_action(self, *args):
         """Callback for the app.about action."""
-        about = Adw.AboutDialog(application_name='gnomeaiassistant',
-                                application_icon='org.gnome.GnomeAiAssistant',
+        about = Adw.AboutDialog(application_name='assistant',
+                                application_icon='com.azibom.assistant',
                                 developer_name='azibom',
                                 version='0.1.0',
                                 developers=['azibom'],
@@ -82,5 +82,5 @@ class GnomeaiassistantApplication(Adw.Application):
 
 def main(version):
     """The application's entry point."""
-    app = GnomeaiassistantApplication()
+    app = AssistantApplication()
     return app.run(sys.argv)
