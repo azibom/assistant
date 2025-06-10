@@ -1,6 +1,6 @@
 #!@PYTHON@
 
-# gnomeaiassistant.in
+# assistant.in
 #
 # Copyright 2025 azibom
 #
@@ -31,16 +31,16 @@ localedir = '@localedir@'
 
 sys.path.insert(1, pkgdatadir)
 signal.signal(signal.SIGINT, signal.SIG_DFL)
-locale.bindtextdomain('gnomeaiassistant', localedir)
-locale.textdomain('gnomeaiassistant')
-gettext.install('gnomeaiassistant', localedir)
+locale.bindtextdomain('assistant', localedir)
+locale.textdomain('assistant')
+gettext.install('assistant', localedir)
 
 if __name__ == '__main__':
     import gi
 
     from gi.repository import Gio
-    resource = Gio.Resource.load(os.path.join(pkgdatadir, 'gnomeaiassistant.gresource'))
+    resource = Gio.Resource.load(os.path.join(pkgdatadir, 'assistant.gresource'))
     resource._register()
 
-    from gnomeaiassistant import main
+    from assistant import main
     sys.exit(main.main(VERSION))
