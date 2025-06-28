@@ -1,0 +1,37 @@
+using Gtk 4.0;
+
+template $AssistantWindow: ApplicationWindow {
+  default-width: 400;
+  default-height: 500;
+  title: "Assistant";
+  icon-name: "com.azibom.assistant";
+
+  Box {
+    orientation: vertical;
+    spacing: 12;
+    margin-start: 12;
+    margin-end: 12;
+    margin-top: 12;
+    margin-bottom: 12;
+
+    ScrolledWindow {
+      vexpand: true;
+
+      TextView chat_view {
+        editable: false;
+        wrap-mode: word;
+        monospace: true;
+        pixels-above-lines: 4;
+        pixels-below-lines: 4;
+        left-margin: 8;
+        right-margin: 8;
+      }
+    }
+
+    Entry chat_entry {
+      placeholder-text: "Type your message...";
+      height-request: 40;
+      activate => $on_entry_activate();
+    }
+  }
+}
