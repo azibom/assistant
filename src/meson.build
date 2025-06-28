@@ -1,15 +1,31 @@
 pkgdatadir = get_option('prefix') / get_option('datadir') / meson.project_name()
 moduledir = pkgdatadir / 'assistant'
+
 gnome = import('gnome')
+python = import('python')
+
+blueprint_compiler = find_program('blueprint-compiler', required: true)
+
+blueprint_files = files(
+  'window.blp',
+)
+
+compiled_ui_dir_name = 'compiled_ui_files'
+
+compiled_blueprints = custom_target('compiled_blueprints',
+  input: blueprint_files,
+  output: compiled_ui_dir_name,
+  command: [blueprint_compiler, 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@']
+)
 
 gnome.compile_resources('assistant',
   'assistant.gresource.xml',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,
+  dependencies: [compiled_blueprints],
+  source_dir: [meson.current_source_dir(), compiled_blueprints.full_path()],
 )
-
-python = import('python')
 
 conf = configuration_data()
 conf.set('PYTHON', python.find_installation('python3').full_path())
