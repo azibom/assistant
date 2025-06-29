@@ -8,6 +8,7 @@ blueprint_compiler = find_program('blueprint-compiler', required: true)
 
 blueprint_files = files(
   'window.blp',
+  'message_item.blp',
 )
 
 compiled_ui_dir_name = 'compiled_ui_files'
@@ -46,7 +47,10 @@ assistant_sources = [
   '__init__.py',
   'main.py',
   'window.py',
-  'commands.py'
+  'commands.py',
+  'message_item.py',
+  'style.css',
+  'style-dark.css',
 ]
 
 install_data(assistant_sources, install_dir: moduledir)
