@@ -2,6 +2,13 @@
 <gresources>
   <gresource prefix="com/azibom/assistant">
     <file preprocess="xml-stripblanks">window.ui</file>
+    <file preprocess="xml-stripblanks">message_item.ui</file>
     <file preprocess="xml-stripblanks">gtk/help-overlay.ui</file>
+    <file alias="style.css">style.css</file>
+    <file alias="style-dark.css">style-dark.css</file>
+  </gresource>
+
+  <gresource prefix="com/azibom/assistant/icons/scalable/actions/">
+    <file preprocess="xml-stripblanks" alias="bot-symbolic.svg">../data/icons/hicolor/scalable/actions/bot-symbolic.svg</file>
   </gresource>
 </gresources>
