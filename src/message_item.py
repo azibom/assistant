@@ -51,7 +51,7 @@ class MessageItem(Gtk.Box):
             self.message_bubble.add_css_class("message-bubble-assistant")
             self.avatar.set_icon_name("bot-symbolic")
             self.user.add_css_class("warning")
-        
+
         self.avatar.set_text(display_role)
         self.user.set_text(display_role)
 
@@ -91,13 +91,9 @@ class MessageItem(Gtk.Box):
             self.parent.chat_entry.set_text(self.content_text)
             self.parent.chat_entry.grab_focus()
 
-
     def on_copy(self, *args):
         Gdk.Display.get_default().get_clipboard().set(self.content_text)
 
         toast = Adw.Toast()
-        toast.set_title('Message copied')
+        toast.set_title("Message copied")
         self.parent.toast_overlay.add_toast(toast)
-
-
-
