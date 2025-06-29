@@ -87,6 +87,11 @@ flatpak-builder --user --install --force-clean build-dir org.gnome.assistant.jso
 
 ---
 
+## 🤝 Code of Conduct
+We follow the [GNOME Code of Conduct](https://wiki.gnome.org/Foundation/CodeOfConduct) to ensure a welcoming environment for everyone. Be kind, be respectful, and help us build something awesome and fun together. 
+
+---
+
 ## 📝 License
 
 Released under the **GPL-3.0-or-later**.
