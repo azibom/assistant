@@ -1,5 +1,6 @@
 from gi.repository import Gtk
 from gi.repository import GLib
+from gi.repository import Adw
 import json
 import urllib.request
 import threading
@@ -7,11 +8,12 @@ import re
 import numpy as np
 
 from .commands import commands
+from .message_item import MessageItem
 
 # --------------- Embedding via Ollama (GPU) -----------------
-EMBED_URL = "http://localhost:11434/api/embeddings"
+OLLAMA_URL = "http://localhost:11434/api"
 EMBED_MODEL = "nomic-embed-text"
-LLM_URL = "http://localhost:11434/api/generate"
+LLM_MODEL = "phi:2.7b-chat-v2-q4_0"
 COMMAND_THRESHOLD = 0.70
 
 
@@ -25,21 +27,23 @@ def extract_argument(prompt: str, arg_description: str) -> str | None:
         f"Respond ONLY with the final value or the single word: NONE.\n"
     )
     payload = {
-        "model": "phi:2.7b-chat-v2-q4_0",
+        "model": LLM_MODEL,
         "prompt": f"{sys_prompt}\nUser: {prompt}",
         "stream": False,
     }
     data = json.dumps(payload).encode()
-    resp = urllib.request.urlopen(urllib.request.Request(LLM_URL, data=data))
+    req = urllib.request.Request(f"{OLLAMA_URL}/generate", data=data)
+    resp = urllib.request.urlopen(req)
     out = json.loads(resp.read())["response"].strip()
     return None if out.upper() == "NONE" else out
 
 
 def embed(text: str) -> np.ndarray:
     payload = {"model": EMBED_MODEL, "prompt": text}
-    vec = urllib.request.urlopen(
-        urllib.request.Request(EMBED_URL, data=json.dumps(payload).encode())
-    ).read()
+    req = urllib.request.Request(
+        f"{OLLAMA_URL}/embeddings", data=json.dumps(payload).encode()
+    )
+    vec = urllib.request.urlopen(req).read()
     return np.asarray(json.loads(vec)["embedding"], dtype=np.float32)
 
 
@@ -84,20 +88,31 @@ def extract_url(prompt: str) -> str | None:
         "stream": False,
     }
     data = json.dumps(payload).encode()
-    resp = urllib.request.urlopen(urllib.request.Request(LLM_URL, data=data))
+    req = urllib.request.Request(f"{OLLAMA_URL}/generate", data=data)
+    resp = urllib.request.urlopen(req)
     out = json.loads(resp.read())["response"].strip()
     return None if out.upper() == "NONE" else out
 
 
 # --------------- GTK Window ----------------------------------
 @Gtk.Template(resource_path="/com/azibom/assistant/window.ui")
-class AssistantWindow(Gtk.ApplicationWindow):
+class AssistantWindow(Adw.ApplicationWindow):
     __gtype_name__ = "AssistantWindow"
 
-    chat_view = Gtk.Template.Child()
+    chat_list = Gtk.Template.Child()
     chat_entry = Gtk.Template.Child()
+    send_button = Gtk.Template.Child()
+    scrolled_window = Gtk.Template.Child()
 
-    def ask_phi(self, prompt: str) -> str:
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.chat_entry.connect("changed", self.on_entry_changed)
+        self.chat_entry.connect("apply", self.on_entry_activate)
+
+    def on_entry_changed(self, entry):
+        self.send_button.set_sensitive(bool(entry.get_text().strip()))
+
+    def ask_llm(self, prompt: str) -> str:
         try:
             sys_prompt = (
                 "You are a helpful assistant. Please answer the user's question "
@@ -105,21 +120,39 @@ class AssistantWindow(Gtk.ApplicationWindow):
                 "Do not give long explanations. Be concise."
             )
             phi_payload = {
-                "model": "phi:2.7b-chat-v2-q4_0",
+                "model": LLM_MODEL,
                 "prompt": f"{sys_prompt}\nUser: {prompt}",
                 "stream": False,
                 "max_tokens": 100,
             }
             data = json.dumps(phi_payload).encode()
-            resp = urllib.request.urlopen(urllib.request.Request(LLM_URL, data=data))
+            req = urllib.request.Request(f"{OLLAMA_URL}/generate", data=data)
+            resp = urllib.request.urlopen(req)
             out = json.loads(resp.read())["response"].strip()
             return out
         except Exception as e:
-            return f"Failed to get response from phi model: {e}"
+            return f"Failed to get response from LLM: {e}"
 
-    def append(self, who, msg):
-        buf = self.chat_view.get_buffer()
-        buf.insert(buf.get_end_iter(), f"{who}: {msg}\n")
+    def append_message(self, who, msg, model=None):
+        item = MessageItem(
+            self,
+            {
+                "role": who,
+                "content": msg,
+                "time": self.get_time(),
+                "model": model or "human",
+            },
+        )
+        self.chat_list.append(item)
+
+        GLib.timeout_add(50, self.scroll_down)
+
+    @Gtk.Template.Callback()
+    def scroll_down(self, *args):
+        self.scrolled_window.emit("scroll-child", Gtk.ScrollType.END, False)
+
+    def get_time(self):
+        return GLib.DateTime.new_now_local().format("%H:%M")
 
     def pick_category(self, text):
         q = embed(text)
@@ -152,36 +185,32 @@ class AssistantWindow(Gtk.ApplicationWindow):
         return cmd["execute"](*args_values)
 
     @Gtk.Template.Callback()
-    def on_entry_activate(self, entry):
-        text = entry.get_text().strip()
+    def on_entry_activate(self, _widget):
+        text = self.chat_entry.get_text().strip()
         if not text:
             return
-        self.append("🙋 You", text)
-        entry.set_text("…")
+        self.append_message("You", text)
+        self.chat_entry.set_text("")
 
         def worker():
             cat = self.pick_category(text)
-            GLib.idle_add(self.append, "🔍 Category", cat)
-
             fn, sim = self.pick_command(text, cat)
 
             if sim >= COMMAND_THRESHOLD:
-                GLib.idle_add(
-                    self.append, "🤖 Command", f"run: {fn}() | similarity: {sim:.2%}"
-                )
+                model_info = f"{cat} > {fn} ({sim:.1%})"
                 out = self.run_cmd(fn, cat, text)
-                GLib.idle_add(self.append, "🖥️ Output", str(out))
+                GLib.idle_add(self.append_message, "Assistant", str(out), model_info)
             else:
                 GLib.idle_add(
-                    self.append,
-                    "🤖",
+                    self.append_message,
+                    "Assistant",
                     (
                         f"I don't think this is a command "
                         f"(similarity {sim:.2%}). "
                         "Let me answer as an assistant..."
                     ),
                 )
-                out = self.ask_phi(text)
-                GLib.idle_add(self.append, "🖥️ Assistant Answer", out)
+                out = self.ask_llm(text)
+                GLib.idle_add(self.append_message, "Assistant", out, LLM_MODEL)
 
         threading.Thread(target=worker, daemon=True).start()
