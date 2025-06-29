@@ -30,16 +30,31 @@
     ],
     "modules" : [
         {
-            "name" : "llama_cpp",
-            "buildsystem" : "simple",
-            "build-commands" : [
-                "pip3 install --no-index --find-links=python_wheels llama-cpp-python --prefix=/app"
+            "name": "python-dependencies",
+            "buildsystem": "simple",
+            "build-commands": [
+                "pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} numpy"
             ],
-            "sources" : [
+            "sources": [
                 {
-                    "type" : "dir",
-                    "path" : "./python_wheels",
-                    "dest" : "python_wheels"
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/7f/a7/c1f1d978166eb6b98ad009503e4d93a8c1962d0eb14a885c352ee0276a54/numpy-2.2.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+                    "sha256": "5062dc1a4e32a10dc2b8b13cedd58988261416e811c1dc4dbdea4f57eea61b0d",
+                    "only-arches": "x86_64",
+                    "x-checker-data": {
+                        "type": "pypi",
+                        "name": "numpy"
+                    }
+                },
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/7f/11/4ebd7a3f4a655764dc98481f97bd0a662fb340d1001be6050606be13e162/numpy-2.2.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                    "sha256": "9b1d07b53b78bf84a96898c1bc139ad7f10fda7423f5fd158fd0f47ec5e01ac7",
+                    "only-arches": "aarch64",
+                    "x-checker-data": {
+                        "type": "pypi",
+                        "name": "numpy"
+                    }
                 }
             ]
         },
