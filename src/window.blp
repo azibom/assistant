@@ -1,37 +1,75 @@
 using Gtk 4.0;
+using Adw 1;
 
-template $AssistantWindow: ApplicationWindow {
+template $AssistantWindow: Adw.ApplicationWindow {
   default-width: 400;
-  default-height: 500;
+  default-height: 600;
   title: "Assistant";
-  icon-name: "com.azibom.assistant";
 
-  Box {
-    orientation: vertical;
-    spacing: 12;
-    margin-start: 12;
-    margin-end: 12;
-    margin-top: 12;
-    margin-bottom: 12;
+  content: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      title-widget: Adw.WindowTitle {
+        title: "Assistant";
+      };
+    }
 
-    ScrolledWindow {
-      vexpand: true;
+    content: Box {
+      orientation: vertical;
+      styles ["main-box"]
 
-      TextView chat_view {
-        editable: false;
-        wrap-mode: word;
-        monospace: true;
-        pixels-above-lines: 4;
-        pixels-below-lines: 4;
-        left-margin: 8;
-        right-margin: 8;
+      Stack chat_stack {
+        vexpand: true;
+
+        ScrolledWindow scrolled_window {
+          hscrollbar-policy: never;
+
+          Adw.Clamp {
+            maximum-size: 1200;
+
+            ListBox chat_list {
+              styles [
+                "message-list",
+              ]
+              selection-mode: none;
+              show-separators: false;
+              hexpand: true;
+              vexpand: false;
+            }
+          }
+        }
       }
-    }
 
-    Entry chat_entry {
-      placeholder-text: "Type your message...";
-      height-request: 40;
-      activate => $on_entry_activate();
-    }
-  }
+      Separator {
+        styles ["spacer"]
+      }
+
+      Box {
+        spacing: 8;
+        margin-start: 16;
+        margin-end: 16;
+        margin-top: 12;
+        margin-bottom: 16;
+
+        Adw.EntryRow chat_entry {
+          hexpand: true;
+          title: "Type a message...";
+          show-apply-button: false;
+          apply => $on_entry_activate();
+          entry-activated => $on_entry_activate();
+          styles ["chat-entry"]
+          
+          [suffix]
+          Button send_button {
+            icon-name: "adw-mail-send";
+            valign: center;
+            clicked => $on_entry_activate();
+            styles ["suggested-action", "circular"]
+            tooltip-text: "Send message";
+            sensitive: false;
+          }
+        }
+      }
+    };
+  };
 }
