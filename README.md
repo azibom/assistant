@@ -1,3 +1,20 @@
+[license-url]: https://github.com/azibom/assistant/blob/master/COPYING
+[license-image]: https://img.shields.io/github/license/azibom/assistant.svg?style=for-the-badge
+[issues-url]: https://github.com/azibom/assistant/issues
+[issues-image]: https://img.shields.io/github/issues/azibom/assistant?style=for-the-badge
+
+<div align="center">
+  <img src="data/icons/hicolor/scalable/apps/com.azibom.assistant.svg" width="128" height="128">
+
+  # Assistant
+
+  **A simple yet powerful AI-powered desktop assistant**
+
+  [![License][license-image]][license-url]
+  [![Issues][issues-image]][issues-url]
+
+</div>
+
 # Assistant
 
 A simple yet powerful **AI-powered desktop assistant**.
