@@ -9,6 +9,7 @@ blueprint_compiler = find_program('blueprint-compiler', required: true)
 blueprint_files = files(
   'window.blp',
   'message_item.blp',
+  'gtk/help-overlay.blp',
 )
 
 compiled_ui_dir_name = 'compiled_ui_files'
@@ -49,6 +50,7 @@ assistant_sources = [
   'window.py',
   'commands.py',
   'message_item.py',
+  'window_actions.py',
   'style.css',
   'style-dark.css',
 ]
