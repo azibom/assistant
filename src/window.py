@@ -147,7 +147,6 @@ class AssistantWindow(Adw.ApplicationWindow):
 
         GLib.timeout_add(50, self.scroll_down)
 
-    @Gtk.Template.Callback()
     def scroll_down(self, *args):
         self.scrolled_window.emit("scroll-child", Gtk.ScrollType.END, False)
 
