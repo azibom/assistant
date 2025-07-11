@@ -103,6 +103,7 @@ class AssistantWindow(Adw.ApplicationWindow):
     chat_entry = Gtk.Template.Child()
     send_button = Gtk.Template.Child()
     scrolled_window = Gtk.Template.Child()
+    overlay_placeholder = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

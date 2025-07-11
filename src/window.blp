@@ -30,6 +30,15 @@ template $AssistantWindow: Adw.ApplicationWindow {
             maximum-size: 1200;
 
             ListBox chat_list {
+              [placeholder]
+              Adw.StatusPage overlay_placeholder {
+                icon-name: "com.azibom.assistant";
+                title: _("Assistant");
+                description: _("Ask me anything or give commands in natural language. I can help you run system commands, open websites, manage files, and more!");
+                vexpand: true;
+                valign: center;
+              }
+
               styles [
                 "message-list",
               ]
