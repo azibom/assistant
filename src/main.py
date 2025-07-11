@@ -56,12 +56,12 @@ class AssistantApplication(Adw.Application):
     def on_about_action(self, *args):
         """Callback for the app.about action."""
         about = Adw.AboutDialog(
-            application_name="assistant",
+            application_name="Assistant",
             application_icon="com.azibom.assistant",
-            developer_name="azibom",
+            developer_name="Azibom",
             version="0.1.0",
-            developers=["azibom"],
-            copyright="© 2025 azibom",
+            developers=["Azibom"],
+            copyright="© 2025 Azibom",
         )
         # Translators: Replace "translator-credits" with your name/username,
         # and optionally an email or URL.
@@ -77,8 +77,7 @@ class AssistantApplication(Adw.Application):
 
         Args:
             name: the name of the action
-            callback: the function to be called when the action is
-              activated
+            callback: the function to be called when the action is activated
             shortcuts: an optional list of accelerators
         """
         action = Gio.SimpleAction.new(name, None)

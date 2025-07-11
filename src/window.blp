@@ -14,6 +14,13 @@ template $AssistantWindow: Adw.ApplicationWindow {
       title-widget: Adw.WindowTitle {
         title: "Assistant";
       };
+
+      [end]
+      MenuButton menu_button {
+        menu-model: primary-menu;
+        icon-name: "open-menu-symbolic";
+        tooltip-text: _("Main Menu");
+      }
     }
 
     content: Box {
@@ -74,4 +81,18 @@ template $AssistantWindow: Adw.ApplicationWindow {
       }
     };
   };
+}
+
+menu primary-menu {
+  section {
+    item {
+      label: _("_Keyboard Shortcuts");
+      action: "win.show-help-overlay";
+    }
+
+    item {
+      label: _("_About Assistant");
+      action: "app.about";
+    }
+  }
 }
