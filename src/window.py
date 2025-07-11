@@ -9,6 +9,7 @@ import numpy as np
 
 from .commands import commands
 from .message_item import MessageItem
+from .window_actions import WindowActionHandler
 
 # --------------- Embedding via Ollama (GPU) -----------------
 OLLAMA_URL = "http://localhost:11434/api"
@@ -99,6 +100,7 @@ def extract_url(prompt: str) -> str | None:
 class AssistantWindow(Adw.ApplicationWindow):
     __gtype_name__ = "AssistantWindow"
 
+    menu_button = Gtk.Template.Child()
     chat_list = Gtk.Template.Child()
     chat_entry = Gtk.Template.Child()
     send_button = Gtk.Template.Child()
@@ -108,6 +110,8 @@ class AssistantWindow(Adw.ApplicationWindow):
         super().__init__(**kwargs)
         self.chat_entry.connect("changed", self.on_entry_changed)
         self.chat_entry.connect("apply", self.on_entry_activate)
+        self.action_handler = WindowActionHandler(self)
+        self.action_handler.setup_actions()
 
     def on_entry_changed(self, entry):
         self.send_button.set_sensitive(bool(entry.get_text().strip()))
