@@ -1,0 +1,54 @@
+using Gtk 4.0;
+
+ShortcutsWindow help_overlay {
+  modal: true;
+
+  ShortcutsSection {
+    section-name: "shortcuts";
+    max-height: 12;
+
+    ShortcutsGroup {
+      title: C_("shortcut window", "General");
+
+      ShortcutsShortcut {
+        title: C_("shortcut window", "Show Shortcuts");
+        action-name: "win.show-help-overlay";
+        accelerator: "<Primary>question F1";
+      }
+
+      ShortcutsShortcut {
+        title: C_("shortcut window", "Quit Application");
+        action-name: "app.quit";
+        accelerator: "<Primary>q";
+      }
+
+      ShortcutsShortcut {
+        title: C_("shortcut window", "Toggle Fullscreen");
+        action-name: "win.toggle-fullscreen";
+        accelerator: "F11";
+      }
+    }
+
+    ShortcutsGroup {
+      title: C_("shortcut window", "Navigation");
+
+      ShortcutsShortcut {
+        title: C_("shortcut window", "Scroll to Top");
+        action-name: "win.scroll-to-top";
+        accelerator: "<Primary>Home";
+      }
+
+      ShortcutsShortcut {
+        title: C_("shortcut window", "Scroll to Bottom");
+        action-name: "win.scroll-to-bottom";
+        accelerator: "<Primary>End";
+      }
+
+      ShortcutsShortcut {
+        title: C_("shortcut window", "Copy Last Response");
+        action-name: "win.copy-last-response";
+        accelerator: "<Primary><Shift>c";
+      }
+    }
+  }
+}
