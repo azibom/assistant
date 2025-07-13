@@ -8,7 +8,7 @@ from .window_actions import WindowActionHandler
 from .utils.command_utils import CommandUtils
 from .utils.llm_utils import LLMClient
 
-# --------------- GTK Window ----------------------------------
+
 @Gtk.Template(resource_path="/com/azibom/assistant/window.ui")
 class AssistantWindow(Adw.ApplicationWindow):
     __gtype_name__ = "AssistantWindow"

@@ -3,8 +3,14 @@ import urllib.request
 import numpy as np
 import re
 
+
 class LLMClient:
-    def __init__(self, ollama_url="http://localhost:11434/api", embed_model="nomic-embed-text", llm_model="phi:2.7b-chat-v2-q4_0"):
+    def __init__(
+        self,
+        ollama_url="http://localhost:11434/api",
+        embed_model="nomic-embed-text",
+        llm_model="phi:2.7b-chat-v2-q4_0",
+    ):
         self.ollama_url = ollama_url
         self.embed_model = embed_model
         self.llm_model = llm_model
