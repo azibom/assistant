@@ -1,6 +1,7 @@
 from .llm_utils import LLMClient
 from ..commands import commands
 
+
 class CommandUtils:
     def __init__(self, llm_client=None):
         self.llm = llm_client or LLMClient()
@@ -9,7 +10,9 @@ class CommandUtils:
         }
         self.CATEGORY_EMB = {k: self.llm.embed(v) for k, v in self.CATEGORIES.items()}
         self.COMMAND_EMB = {
-            cat: {n: self.llm.embed(c["short"] + " " + c["long"]) for n, c in cmds.items()}
+            cat: {
+                n: self.llm.embed(c["short"] + " " + c["long"]) for n, c in cmds.items()
+            }
             for cat, cmds in commands.items()
         }
         self.KEYWORDS = {
@@ -23,7 +26,9 @@ class CommandUtils:
 
     def pick_category(self, text):
         q = self.llm.embed(text)
-        return max(self.CATEGORY_EMB, key=lambda c: self.llm.cosine(q, self.CATEGORY_EMB[c]))
+        return max(
+            self.CATEGORY_EMB, key=lambda c: self.llm.cosine(q, self.CATEGORY_EMB[c])
+        )
 
     def pick_command(self, text, category):
         t = text.lower()
