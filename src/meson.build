@@ -8,7 +8,7 @@ blueprint_compiler = find_program('blueprint-compiler', required: true)
 
 blueprint_files = files(
   'window.blp',
-  'message_item.blp',
+  'gtk/message_item.blp',
   'gtk/help-overlay.blp',
 )
 
@@ -51,8 +51,8 @@ assistant_sources = [
   'commands.py',
   'message_item.py',
   'window_actions.py',
-  'style.css',
-  'style-dark.css',
 ]
 
 install_data(assistant_sources, install_dir: moduledir)
+
+subdir('utils')

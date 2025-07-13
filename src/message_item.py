@@ -1,7 +1,7 @@
 from gi.repository import Gtk, Adw, Gio, Gdk
 
 
-@Gtk.Template(resource_path="/com/azibom/assistant/message_item.ui")
+@Gtk.Template(resource_path="/com/azibom/assistant/gtk/message_item.ui")
 class MessageItem(Gtk.Box):
     __gtype_name__ = "MessageItem"
 
