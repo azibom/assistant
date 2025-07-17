@@ -6,7 +6,8 @@ class CommandUtils:
     def __init__(self, llm_client=None):
         self.llm = llm_client or LLMClient()
         self.CATEGORIES = {
-            "system": "System-level commands: uptime, free space, assistant name, open browser",
+            "system": "System-level commands: uptime, "
+            "free space, assistant name, open browser",
         }
         self.CATEGORY_EMB = {}
         self.COMMAND_EMB = {}

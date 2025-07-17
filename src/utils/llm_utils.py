@@ -30,7 +30,7 @@ class LLMClient:
 
     def check_connection(self) -> bool:
         """
-        Checks if a local Ollama instance is running 
+        Checks if a local Ollama instance is running
         and has the required model.
         Updates self.is_ollama_connected accordingly.
         Returns True if the model is present, False otherwise.
@@ -77,7 +77,8 @@ class LLMClient:
                 return json.loads(response.read()), None
         except urllib.error.URLError as e:
             self.set_ollama_connected(False)
-            err_msg = f"Ollama server is down or not reachable at {self.base_url}. Error: {e.reason}"
+            err_msg = "Ollama server is down or not reachable at "
+            f"{self.base_url}. Error: {e.reason}"
             return None, err_msg
         except Exception as e:
             self.set_ollama_connected(False)
