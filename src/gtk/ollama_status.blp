@@ -1,0 +1,248 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $OllamaStatusDialog: Adw.Dialog {
+  content-height: 750;
+  content-width: 600;
+
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {}
+
+    content: ScrolledWindow {
+      hscrollbar-policy: never;
+
+      Adw.Clamp {
+        maximum-size: 520;
+        tightening-threshold: 400;
+        margin-start: 12;
+        margin-end: 12;
+        margin-bottom: 24;
+
+        Box {
+          orientation: vertical;
+          spacing: 48;
+
+          Box connected_view {
+            orientation: vertical;
+            halign: fill;
+            spacing: 24;
+
+            Box {
+              halign: center;
+              Picture {
+                file: "resource:///com/azibom/assistant/data/assistant-connectivity.svg";
+                can-shrink: false;
+                margin-bottom: 24;
+              }
+            }
+
+            Label {
+              label: _("Ollama Connected");
+              styles [ "title-1" ]
+            }
+
+            Label {
+              label: _("The Ollama server is running and the essential model 'nomic-embed-text' is connected.");
+              wrap: true;
+              justify: center;
+            }
+
+            Box {
+              orientation: vertical;
+              spacing: 12;
+
+              Label {
+                label: _("Tip: For full chat features, make sure to run and pull the 'phi:2.7b-chat' model if you haven't already:");
+                wrap: true;
+                justify: center;
+                styles [ "dim-label" ]
+              }
+
+              Box {
+                styles [ "card" ]
+                Label label_chat_command_connected {
+                  label: "ollama pull phi:2.7b-chat";
+                  wrap: true;
+                  selectable: true;
+                  xalign: 0;
+                  styles [ "monospace" ]
+                }
+              }
+            }
+          }
+
+          Box not_connected_view {
+            orientation: vertical;
+            halign: fill;
+            spacing: 24;
+
+            Box {
+              halign: center;
+              Picture {
+                file: "resource:///com/azibom/assistant/data/assistant-connectivity.svg";
+                can-shrink: false;
+                margin-bottom: 24;
+              }
+            }
+
+            Label {
+              label: _("Ollama Not Connected");
+
+              styles [
+                "title-1",
+              ]
+            }
+
+            Label {
+              label: _("Assistant requires Ollama to be running. Please install Ollama and run the following commands in a terminal, then restart Assistant.");
+              wrap: true;
+              justify: center;
+            }
+
+            Box {
+              orientation: vertical;
+              spacing: 12;
+
+              Label {
+                label: _("1. Start Ollama server:");
+                halign: start;
+                styles [
+                  "heading",
+                ]
+              }
+
+              Box {
+                styles [ "card" ]
+                
+                Label label_serve_command {
+                  label: "ollama serve";
+                  wrap: true;
+                  selectable: true;
+                  xalign: 0;
+                  styles [ "monospace" ]
+                }
+              }
+            }
+
+            Box {
+              orientation: vertical;
+              spacing: 12;
+
+              Label {
+                label: _("2. Install required models:");
+                halign: start;
+                styles [
+                  "heading",
+                ]
+              }
+
+              Box {
+                styles [ "card" ]
+
+                Label label_embed_command {
+                  label: "ollama pull nomic-embed-text";
+                  wrap: true;
+                  selectable: true;
+                  xalign: 0;
+                  styles [ "monospace" ]
+                }
+              }
+
+              Box {
+                styles [ "card" ]
+                
+                Label label_chat_command {
+                  label: "ollama pull phi:2.7b-chat";
+                  wrap: true;
+                  selectable: true;
+                  xalign: 0;
+                  styles [ "monospace" ]
+                }
+              }
+            }
+
+            Box {
+              orientation: vertical;
+
+              Box {
+                margin-bottom: 6;
+
+                Label {
+                  label: _("Required Models");
+                  halign: start;
+                  hexpand: true;
+                  styles [ "heading" ]
+                }
+
+                Button button_info {
+                  icon-name: "help-about-symbolic";
+                  styles [ "flat" ]
+                }
+              }
+
+              ListBox {
+                selection-mode: none;
+                styles [ "boxed-list" ]
+
+                Adw.ActionRow {
+                  [prefix]
+                  Image { icon-name: "applications-system-symbolic"; }
+                  title: _("nomic-embed-text");
+                  subtitle: _("Command understanding and embeddings");
+                  styles [ "property" ]
+                }
+
+                Adw.ActionRow {
+                  [prefix]
+                  Image { icon-name: "dialog-information-symbolic"; }
+                  title: _("phi:2.7b-chat");
+                  subtitle: _("AI chat and argument extraction");
+                  styles [ "property" ]
+                }
+              }
+            }
+
+            Box {
+              orientation: vertical;
+              spacing: 12;
+
+              Label {
+                label: _("Alternative models (optional):");
+                halign: start;
+                styles [ "heading" ]
+              }
+
+              Box {
+                styles [ "card" ]
+                
+                Label label_alternative_command {
+                  label: "ollama pull tinyllama";
+                  wrap: true;
+                  selectable: true;
+                  xalign: 0;
+                  styles [
+                    "monospace",
+                    "dim-label",
+                  ]
+                }
+              }
+            }
+
+            Box {
+              orientation: horizontal;
+              spacing: 12;
+              halign: center;
+
+              Button button_retry {
+                label: _("Retry Connection");
+                styles [ "suggested-action" ]
+                clicked => $on_retry_clicked();
+              }
+            }
+          }
+        }
+      }
+    };
+  }
+}

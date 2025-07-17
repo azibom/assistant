@@ -4,11 +4,20 @@
     <file preprocess="xml-stripblanks">window.ui</file>
     <file preprocess="xml-stripblanks">gtk/message_item.ui</file>
     <file preprocess="xml-stripblanks">gtk/help-overlay.ui</file>
+    <file preprocess="xml-stripblanks">gtk/ollama_status.ui</file>
     <file alias="style.css">style/style.css</file>
     <file alias="style-dark.css">style/style-dark.css</file>
   </gresource>
 
   <gresource prefix="com/azibom/assistant/icons/scalable/actions/">
     <file preprocess="xml-stripblanks" alias="bot-symbolic.svg">../data/icons/hicolor/scalable/actions/bot-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="applications-system-symbolic.svg">../data/icons/hicolor/scalable/actions/applications-system-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="help-about-symbolic.svg">../data/icons/hicolor/scalable/actions/help-about-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="check-round-outline2-symbolic.svg">../data/icons/hicolor/scalable/actions/check-round-outline2-symbolic.svg</file>
   </gresource>
+
+  <gresource prefix="com/azibom/assistant/data/">
+    <file preprocess="xml-stripblanks" alias="assistant-connectivity.svg">../data/assets/assistant-connectivity.svg</file>
+  </gresource>
+
 </gresources>
