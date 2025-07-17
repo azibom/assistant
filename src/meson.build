@@ -10,6 +10,7 @@ blueprint_files = files(
   'window.blp',
   'gtk/message_item.blp',
   'gtk/help-overlay.blp',
+  'gtk/ollama_status.blp',
 )
 
 compiled_ui_dir_name = 'compiled_ui_files'
@@ -51,6 +52,7 @@ assistant_sources = [
   'commands.py',
   'message_item.py',
   'window_actions.py',
+  'ollama_status_dialog.py',
 ]
 
 install_data(assistant_sources, install_dir: moduledir)

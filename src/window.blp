@@ -21,6 +21,14 @@ template $AssistantWindow: Adw.ApplicationWindow {
         icon-name: "open-menu-symbolic";
         tooltip-text: _("Main Menu");
       }
+
+    [start]
+      Button connection_status_button {
+        halign: center;
+        margin-start: 8;
+        margin-end: 8;
+        clicked => $on_connection_status_clicked();
+      }
     }
 
     content: Box {
