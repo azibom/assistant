@@ -109,7 +109,8 @@ class AssistantWindow(Adw.ApplicationWindow):
                 GLib.idle_add(
                     self.append_message,
                     "Assistant",
-                    f'Make Sure "{self.llm_client.llm_model}" is running and connected!',
+                    f'Make Sure "{self.llm_client.llm_model}" is'
+                    "running and connected!",
                     self.llm_client.llm_model,
                 )
             else:
