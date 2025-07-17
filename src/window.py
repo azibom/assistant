@@ -136,14 +136,10 @@ class AssistantWindow(Adw.ApplicationWindow):
         def updater() -> bool:
             self.llm_client.check_connection()
             self.update_connection_status()
-            print(f"Ollama connection status: {self.llm_client.is_ollama_connected}")
             return GLib.SOURCE_CONTINUE
 
-        print(f"Starting Ollama health check every {interval_seconds} seconds.")
         event_source_id = GLib.timeout_add_seconds(interval_seconds, updater)
-
         updater()
-
         return event_source_id
 
     def update_connection_status(self):
