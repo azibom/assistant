@@ -38,7 +38,6 @@ class CommandUtils:
         q, err = self.llm.embed(text)
         if err:
             return None, err
-        print(q, err)
         return (
             max(
                 self.CATEGORY_EMB,
