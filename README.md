@@ -82,7 +82,7 @@ ollama pull phi:2.7b-chat
 ```bash
 git clone https://github.com/azibom/assistant.git
 cd assistant
-flatpak-builder --user --install --force-clean build-dir org.gnome.assistant.json
+flatpak-builder --user --install --force-clean build-dir com.azibom.assistant.json
 ```
 
 > Requires **GNOME Platform** and **GNOME Sdk**.
